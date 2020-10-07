@@ -34,6 +34,21 @@ class MyWebService(object):
             print("listFiles END!")
             return output
     
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def listFolders(self):
+        print("listFiles BEGIN!")
+        if cherrypy.request.method == 'OPTIONS':
+            print("listFolders OPTIONS!")
+            cherrypy_cors.preflight(allowed_methods=['GET'])
+
+        if cherrypy.request.method == 'GET':
+            print("listFolders GET!")
+            output = p.listFolders("/data")
+            print("File listFolders: " + output)
+            print("listFolders END!")
+            return output
+
     def __OPTIONS(self):
         cherrypy.response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
         cherrypy.response.headers["Access-Control-Allow-Credentials"] = "true"
@@ -46,21 +61,6 @@ class MyWebService(object):
 
 if __name__ == '__main__':
     print ("Hallo!")
-    #config = {'server.socket_host': '0.0.0.0'}
-    # config = {
-    #     '/': {
-    #         'tools.response_headers.on': True,
-    #         'tools.response_headers.headers': [('Content-Type', 'application/json'), ('Access-Control-Allow-Origin')],
-    #         'server.socket_host': '0.0.0.0',
-    #         'server.socket_port': 8080
-    #     }
-    # }
-    # config = {
-    #         'global': {
-    #         'server.socket_host':'0.0.0.0',
-    #         'server.socket_port': 8080
-    #        }
-    # }
     
     config = {
         'global': {
@@ -76,10 +76,5 @@ if __name__ == '__main__':
         }
     }
     cherrypy_cors.install()
-    # cherrypy.config.update({
-    #     'server.socket_host': '127.0.0.1',
-    #     'server.socket_port': 8081,
-    #     'cors.expose.on': True,
-    # })
     cherrypy.quickstart(MyWebService(),'/', config)
 

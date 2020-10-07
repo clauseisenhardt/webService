@@ -6,56 +6,34 @@
 <body>
 
 <h1>Demo - access to webservice</h1>
-<h2>Demo - Files list #1</h2>
+<h2>Demo - Folder list #1</h2>
 <p id="fileListe1"></p>
 <h2>Demo - Files list #2</h2>
 <p id="fileListe2"></p>
+<h2>Demo - Files list #3</h2>
+<p id="fileListe3"></p>
 <h2>Demo - End of page</h2>
 
 <script>
-var url="http://localhost:8081/listFiles"
-//console.log(url);
 var myHeaders = new Headers();
 myHeaders.append('pragma', 'no-cache');
 myHeaders.append('cache-control', 'no-cache');
-
-var myInit = {
+var myGet = {
   method: 'GET',
   mode: 'cors',
   headers: myHeaders,
 };
 
-var myRequest = new Request(url);
+var folderUrl="http://localhost:8081/listFolders";
+var myPathRequest = new Request(folderUrl);
 
-fetch(myRequest, myInit) 
-.then(
-    function(response) {
-      console.log(response);
-      if (response.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' +
-          response.status);
-        return;
-      }
+PathFetch(myPathRequest, myGet, "fileListe1");
 
-      // Examine the text in the response
-      response.json().then(function(data) {
-        console.log(data);
-    
-        var fileList = JSON.parse(data);
-        document.getElementById("fileListe1").innerHTML = fileList;
-        var i;
-        for (i = 0; i < fileList.length; i++)
-          document.getElementById("fileListe2").innerHTML += (i+1) + ": " + fileList[i] + "<br /> ";
-          //document.writeln((i+1) + ": " + fileList[i]);
+var filesUrl="http://localhost:8081/listFiles";
+myPathRequest = new Request(filesUrl);
 
-        console.log(fileList);
-      });
+PathFetch(myPathRequest, myGet, "fileListe2");
 
-      }
-  )
-  .catch(function(err) {
-    console.log('Fetch Error :-S', err);
-  });
 </script>
 </body>
 </html>
