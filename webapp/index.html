@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="myScripts.js"></script>
+</head>
+<body>
+
+<h1>Demo - access to webservice</h1>
+<h2>Demo - Files list #1</h2>
+<p id="fileListe1"></p>
+<h2>Demo - Files list #2</h2>
+<p id="fileListe2"></p>
+<h2>Demo - End of page</h2>
+
+<script>
+var url="http://localhost:8081/listFiles"
+//console.log(url);
+var myHeaders = new Headers();
+myHeaders.append('pragma', 'no-cache');
+myHeaders.append('cache-control', 'no-cache');
+
+var myInit = {
+  method: 'GET',
+  mode: 'cors',
+  headers: myHeaders,
+};
+
+var myRequest = new Request(url);
+
+fetch(myRequest, myInit) 
+.then(
+    function(response) {
+      console.log(response);
+      if (response.status !== 200) {
+        console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }
+
+      // Examine the text in the response
+      response.json().then(function(data) {
+        console.log(data);
+    
+        var fileList = JSON.parse(data);
+        document.getElementById("fileListe1").innerHTML = fileList;
+        var i;
+        for (i = 0; i < fileList.length; i++)
+          document.getElementById("fileListe2").innerHTML += (i+1) + ": " + fileList[i] + "<br /> ";
+          //document.writeln((i+1) + ": " + fileList[i]);
+
+        console.log(fileList);
+      });
+
+      }
+  )
+  .catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });
+</script>
+</body>
+</html>

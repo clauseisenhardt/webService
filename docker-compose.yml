@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+    webservice:
+        build: ./webservice
+        ports: 
+        - '8081:8081'
+        tty: true
+        volumes: 
+        - $DATA_PATH:/data
+    
+    web:
+        image: apache
+        build: ./webapp
+        depends_on:
+        - webservice
+        container_name: apache_web
+        restart: always
+        ports:
+        - "8080:80"
