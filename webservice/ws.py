@@ -17,7 +17,7 @@ class MyWebService(object):
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def listFiles(self):
+    def listFiles(self, path=None):
         print("listFiles BEGIN!")
         if cherrypy.request.method == 'OPTIONS':
             print("listFiles OPTIONS!")
@@ -29,7 +29,15 @@ class MyWebService(object):
 
         if cherrypy.request.method == 'GET':
             print("listFiles GET!")
-            output = p.listFiles("/data")
+            #path = cherrypy.request.params.get("path")
+            #path = params["path"]
+            if (path != None):
+                print("Path is:" + path)
+            else:
+                path = "/data"
+                print("No path is set so default is used:" + path)
+
+            output = p.listFiles(path)
             print("File list: " + output)
             print("listFiles END!")
             return output
@@ -72,7 +80,7 @@ if __name__ == '__main__':
         ,
         '/favicon.ico': {
             'tools.staticfile.on': True,
-            'tools.staticfile.filename': '/path/to/myfavicon.ico'
+            'tools.staticfile.filename': '/favicon.ico'
         }
     }
     cherrypy_cors.install()

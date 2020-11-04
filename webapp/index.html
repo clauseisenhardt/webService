@@ -2,16 +2,26 @@
 <html>
 <head>
 <script src="myScripts.js"></script>
+<link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 
 <h1>Demo - access to webservice</h1>
-<h2>Demo - Folder list #1</h2>
+<h2>Folder list #1</h2>
 <p id="fileListe1"></p>
-<h2>Demo - Files list #2</h2>
+<h2>Files list #2</h2>
 <p id="fileListe2"></p>
-<h2>Demo - Files list #3</h2>
-<p id="fileListe3"></p>
+
+<h2>List Files in folder</h2>
+<form action = ">
+  <fieldset>
+    <label for="inputPath">Choose an audio path</label>
+    <input type="text" name="inputPath" id="inputPath" multiple="false" onchange="listPath()">
+    <p id="outputList">File List:</br></p>
+    <!--input type="text" id="outputList2" -->
+    <!--textarrea id="outputList3">Liste3:</textarrea-->
+  </fieldset>
+</form>
 <h2>Demo - End of page</h2>
 
 <script>
@@ -34,6 +44,10 @@ myPathRequest = new Request(filesUrl);
 
 PathFetch(myPathRequest, myGet, "fileListe2");
 
+filesUrl="http://localhost:8081/listFiles?path=/data/putin";
+myPathRequest = new Request(filesUrl);
+
+//PathFetch(myPathRequest, myGet, "fileListe3");
 </script>
 </body>
 </html>
